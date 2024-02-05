@@ -307,8 +307,4 @@ LANGUAGES = [
     ('ru', _('Russian')),
 ]
 
-JAZZMIN_JS_INJECTION = True
 
-JAZZMIN_JS_FILES = [
-    'admin_scripts.js',
-]

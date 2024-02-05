@@ -1,3 +1,4 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import GenericViewSet
 from django.contrib.auth import get_user_model
@@ -17,6 +18,7 @@ class UserViewSet(ListModelMixin, GenericViewSet):
     serializer_class = UserSerializer
     permission_classes = [AllowAny, ]
 
+    @swagger_auto_schema(request_body=RegisterSerializer)
     @action(['POST'], detail=False)
     def register(self, request, *args, **kwargs):
         serializer = RegisterSerializer(data=request.data)
