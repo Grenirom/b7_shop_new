@@ -5,7 +5,7 @@ HOST = config('HOST_FOR_SEND_EMAIL')
 
 
 def send_confirmation_email(user, code):
-    link = f'http://{HOST}:8000/api/account/activate/{code}/'
+    link = f'http://{HOST}/api/account/activate/{code}/'
 
     send_mail(
         'Здравствуйте, активируйте ваш аккаунт!',
