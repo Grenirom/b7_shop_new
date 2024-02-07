@@ -1,13 +1,7 @@
 from rest_framework.response import Response
 
 from .celery import app
-from apps.account.send_email import send_confirmation_email
 from apps.orders.send_email import send_order_notification_email, send_order_email_to_owner
-
-
-@app.task
-def send_confirmation_email_task(user, code):
-    send_confirmation_email(user, code)
 
 
 @app.task
