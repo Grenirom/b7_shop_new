@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, ProductImage, ProductSize
+from .models import Product, ProductImage, ProductSize, ProductDiscount
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -26,7 +26,17 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
 class ProductListSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
+    discounted_price = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ('id', 'images', 'title', 'price', 'stock')
+        fields = ('id', 'images', 'title', 'price', 'stock',
+                  'category', 'discounted_price')
+
+    def get_discounted_price(self,  obj):
+        try:
+            product_discount = ProductDiscount.objects.get(product=obj.id)
+            discounted_price = obj.price - (obj.price * product_discount.discount / 100)
+            return discounted_price
+        except ProductDiscount.DoesNotExist:
+            return None

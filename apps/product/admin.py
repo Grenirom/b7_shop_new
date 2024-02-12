@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db import models
 from django.forms import Textarea
 
-from .models import Product, ProductImage, ProductSize
+from .models import Product, ProductImage, ProductSize, ProductDiscount
 
 
 class ProductImageInline(admin.TabularInline):
@@ -15,6 +15,11 @@ class ProductSizeInline(admin.TabularInline):
     extra = 3
 
 
+class ProductDiscountInline(admin.TabularInline):
+    model = ProductDiscount
+    extra = 0
+
+
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline, ProductSizeInline]
     formfield_overrides = {
@@ -25,3 +30,4 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductImage)
+admin.site.register(ProductDiscount)

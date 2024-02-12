@@ -1,7 +1,8 @@
 from ckeditor.fields import RichTextField
-from django.db.models import JSONField
+from django.db.models import JSONField, ExpressionWrapper, FloatField
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.db import models
+from django.db.models import F
 
 from apps.categories.models import Category
 
@@ -62,3 +63,11 @@ class ProductSize(models.Model):
     class Meta:
         verbose_name = 'Размер товара'
         verbose_name_plural = 'Размеры товара'
+
+
+class ProductDiscount(models.Model):
+    product = models.ManyToManyField(Product, related_name='product_discounts')
+    discount = models.PositiveSmallIntegerField(verbose_name='Процент скидки',
+                                                validators=[MinValueValidator(limit_value=0),
+                                                            MaxValueValidator(limit_value=99)])
+
