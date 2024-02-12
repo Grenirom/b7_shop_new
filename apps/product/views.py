@@ -10,25 +10,21 @@ from .models import Product
 from .serializers import ProductDetailSerializer, ProductListSerializer
 
 
-class StandartResultPagination(PageNumberPagination):
-    page_size = 4
-    page_query_param = 'page'
-
+# class StandartResultPagination(PageNumberPagination):
+#     page_size = 3
+#     page_query_param = 'page'
+#
 
 class ProductListViewSet(ModelViewSet):
-    pagination_class = StandartResultPagination
-    filter_backends = (DjangoFilterBackend, SearchFilter)
+    # pagination_class = StandartResultPagination
+    # filter_backends = (DjangoFilterBackend, SearchFilter)
     queryset = Product.objects.prefetch_related('images').all()
-    search_fields = '__all__'
+    # search_fields = '__all__'
+
 
     @method_decorator(cache_page(60 * 15))
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = ProductListSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
+        queryset = self.get_queryset()
         serializer = ProductListSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -37,5 +33,28 @@ class ProductListViewSet(ModelViewSet):
         instance = self.get_object()
         serializer = ProductDetailSerializer(instance)
         return Response(serializer.data)
+
+    # @method_decorator(cache_page(60 * 15))
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.filter_queryset(self.get_queryset())
+    #     page = self.paginate_queryset(queryset)
+    #     if page is not None:
+    #         serializer = ProductListSerializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+    #
+    #     serializer = ProductListSerializer(queryset, many=True)
+    #     return Response(serializer.data)
+    #
+    # @method_decorator(cache_page(60 * 15))
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = ProductDetailSerializer(instance)
+    #     return Response(serializer.data)
+
+    # def get_serializer_class(self):
+    #     if self.action == 'list':
+    #         return ProductListSerializer
+    #     elif self.action == 'retrieve':
+    #         return ProductDetailSerializer
 
     http_method_names = ['get', ]
