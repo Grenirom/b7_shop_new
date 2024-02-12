@@ -11,7 +11,7 @@ from .serializers import ProductDetailSerializer, ProductListSerializer
 
 
 class StandartResultPagination(PageNumberPagination):
-    page_size = 3
+    page_size = 4
     page_query_param = 'page'
 
 
@@ -21,19 +21,18 @@ class ProductListViewSet(ModelViewSet):
     queryset = Product.objects.prefetch_related('images').all()
     search_fields = '__all__'
 
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return ProductListSerializer
-        elif self.action == 'retrieve':
-            return ProductDetailSerializer
-
-    # @method_decorator(cache_page(60 * 15))
+    @method_decorator(cache_page(60 * 15))
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = ProductListSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = ProductListSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    # @method_decorator(cache_page(60 * 15))
+    @method_decorator(cache_page(60 * 15))
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = ProductDetailSerializer(instance)
