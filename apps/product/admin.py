@@ -15,11 +15,6 @@ class ProductSizeInline(admin.TabularInline):
     extra = 3
 
 
-class ProductDiscountInline(admin.TabularInline):
-    model = ProductDiscount
-    extra = 0
-
-
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline, ProductSizeInline]
     formfield_overrides = {

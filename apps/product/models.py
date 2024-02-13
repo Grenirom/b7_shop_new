@@ -74,3 +74,5 @@ class ProductDiscount(models.Model):
     class Meta:
         verbose_name = 'Скидка'
         verbose_name_plural = 'Скидки'
+
+

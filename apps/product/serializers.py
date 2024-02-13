@@ -2,6 +2,18 @@ from rest_framework import serializers
 from .models import Product, ProductImage, ProductSize, ProductDiscount
 
 
+class BaseProductSerializer(serializers.ModelSerializer):
+    discounted_price = serializers.SerializerMethodField()
+
+    def get_discounted_price(self, obj):
+        try:
+            product_discount = ProductDiscount.objects.get(product=obj.id)
+            discounted_price = obj.price - (obj.price * product_discount.discount / 100)
+            return discounted_price
+        except ProductDiscount.DoesNotExist:
+            return None
+
+
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
@@ -14,17 +26,19 @@ class ProductSizeSerializer(serializers.ModelSerializer):
         fields = ('size', )
 
 
-class ProductDetailSerializer(serializers.ModelSerializer):
+class ProductDetailSerializer(BaseProductSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     product_sizes = ProductSizeSerializer(many=True, read_only=True)
+    discounted_price = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = ['id', 'title', 'article', 'price', 'quantity', 'description',
-                  'tech_characteristics', 'category', 'dop_info', 'images', 'product_sizes', 'stock']
+                  'tech_characteristics', 'category', 'dop_info', 'images', 'product_sizes', 'stock',
+                  'discounted_price']
 
 
-class ProductListSerializer(serializers.ModelSerializer):
+class ProductListSerializer(BaseProductSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     discounted_price = serializers.SerializerMethodField()
 
@@ -33,10 +47,3 @@ class ProductListSerializer(serializers.ModelSerializer):
         fields = ('id', 'images', 'title', 'price', 'stock',
                   'category', 'discounted_price')
 
-    def get_discounted_price(self,  obj):
-        try:
-            product_discount = ProductDiscount.objects.get(product=obj.id)
-            discounted_price = obj.price - (obj.price * product_discount.discount / 100)
-            return discounted_price
-        except ProductDiscount.DoesNotExist:
-            return None
