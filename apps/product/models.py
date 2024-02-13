@@ -68,3 +68,9 @@ class ProductDiscount(models.Model):
                                                 validators=[MinValueValidator(limit_value=0),
                                                             MaxValueValidator(limit_value=99)])
 
+    def __str__(self):
+        return f'Скидка в {self.discount}%'
+
+    class Meta:
+        verbose_name = 'Скидка'
+        verbose_name_plural = 'Скидки'
