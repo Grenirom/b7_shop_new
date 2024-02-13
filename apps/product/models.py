@@ -1,8 +1,5 @@
-from ckeditor.fields import RichTextField
-from django.db.models import JSONField, ExpressionWrapper, FloatField
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.db import models
-from django.db.models import F
 
 from apps.categories.models import Category
 
@@ -43,7 +40,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.FileField(upload_to='media/product-images/')
+    image = models.FileField(upload_to='product-images/')
 
     def __str__(self):
         return f'Фото товара'
