@@ -8,11 +8,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-29ubiick)o2x-d4e%cg*op2u(4h4sdks3e0y6p6%0pya$^i^p6'
 
-DEBUG = config('DEBUG', cast=bool)
-
-ALLOWED_HOSTS = []
-
-
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
@@ -25,10 +20,10 @@ INSTALLED_APPS = [
 
     # installed apps
     'rest_framework',
+    'django_filters',
     "phonenumber_field",
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    'django_filters',
     'corsheaders',
     'drf_yasg',
     'ckeditor',
@@ -39,6 +34,11 @@ INSTALLED_APPS = [
     'apps.orders',
     'apps.account',
 ]
+DEBUG = config('DEBUG', cast=bool)
+
+ALLOWED_HOSTS = []
+
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -119,43 +119,43 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGGING = {
-#     'version': 1,
-#     'formatters': {
-#         'verbose': {
-#             'format': '{asctime} - {levelname} - {module} - {message}',
-#             'style': '{',
-#         },
-#         'simple': {
-#             'format': '{message}\n',
-#             'style': '{',
-#         },
-#     },
-#     'filters': {
-#         'require_debug_true': {
-#             '()': 'django.utils.log.RequireDebugTrue',
-#         }
-#     },
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'filters': ['require_debug_true'],
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'simple'
-#         }
-#     },
-#     'loggers': {
-#         'django.db.backends': {
-#             'level': 'DEBUG',
-#             'handlers': ['console'],
-#         },
-#         'django.request': {
-#             'handlers': ['console'],
-#             'propagate': True,
-#             'level': 'DEBUG',
-#         }
-#     }
-# }
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} - {levelname} - {module} - {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{message}\n',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'DEBUG',
+        }
+    }
+}
 
 AUTH_USER_MODEL = 'account.CustomUser'
 
@@ -171,7 +171,10 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
 
 SIMPLE_JWT = {

@@ -4,9 +4,9 @@ from . import views
 
 
 router = routers.DefaultRouter()
-router.register(r'', views.ProductListViewSet)
+router.register(r'', views.ProductListViewSet, basename='products')
 
 urlpatterns = [
+    # path('filter/', views.ProductFilter.as_view()),
     path('', include(router.urls)),
-
 ]
