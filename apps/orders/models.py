@@ -20,6 +20,7 @@ class OrderItem(models.Model):
         verbose_name = 'Товар в заказе'
         verbose_name_plural = 'Товары в заказе'
 
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', verbose_name='пользователь')
     name = models.CharField(max_length=150, verbose_name='Имя пользователя')

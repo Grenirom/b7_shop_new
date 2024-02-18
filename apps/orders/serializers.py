@@ -1,9 +1,10 @@
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from .models import Order, OrderItem
-from ..product.models import Product
+from ..product.models import Product, ProductDiscount
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -54,10 +55,20 @@ class OrderSerializer(serializers.ModelSerializer):
 
         for product in products:
             product_id = product['product'].id
-            total_sum += product['quantity'] * product['product'].price
-
+            quantity = product['quantity']
             product_data = get_object_or_404(Product, id=product_id)
-            product_data.quantity -= product['quantity']
+
+            if product_data.quantity < quantity:
+                raise ValidationError(f'Not enough quantity for {product_data.title}')
+
+            # Применяем скидку, если она есть для данного товара
+            discounted_price = product_data.price
+            product_discount = ProductDiscount.objects.filter(product=product_data).first()
+            if product_discount:
+                discounted_price = product_data.price - (product_data.price * product_discount.discount / 100)
+
+            total_sum += quantity * discounted_price
+            product_data.quantity -= quantity
             product_data_list.append(product_data)
 
         Product.objects.bulk_update(product_data_list, ['quantity'])
