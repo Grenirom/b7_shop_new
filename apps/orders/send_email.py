@@ -1,6 +1,9 @@
 from decouple import config
 from django.core.mail import send_mail
 
+OWNER_EMAIL = config('OWNER_EMAIL')
+LINK = config('LINK')
+
 
 def send_order_notification_email(email, order_id, total_sum):
     send_mail(
@@ -13,10 +16,6 @@ def send_order_notification_email(email, order_id, total_sum):
         [email],
         fail_silently=False
     )
-
-
-OWNER_EMAIL = config('OWNER_EMAIL')
-LINK = config('LINK')
 
 
 def send_order_email_to_owner(order_id, total_sum, created_at, shipping_address):

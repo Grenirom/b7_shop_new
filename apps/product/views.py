@@ -1,4 +1,4 @@
-from django.db.models import Prefetch, Subquery, OuterRef
+from django.db.models import Prefetch, Subquery, OuterRef, Avg
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -16,12 +16,11 @@ class StandartResultPagination(PageNumberPagination):
 class ProductListViewSet(ModelViewSet):
     pagination_class = StandartResultPagination
     queryset = Product.objects.annotate(
-        discounted_price=Subquery(
-            ProductDiscount.objects.filter(product=OuterRef('pk')).values('discount')[:1]
-        )
+        avg_discount=Avg('product_discounts__discount')
     ).prefetch_related(
-        'images'
-    ).all().order_by('id')
+        'images',
+        'product_discounts'
+    ).order_by('id')
     search_fields = '__all__'
 
     def get_queryset(self):

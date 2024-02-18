@@ -10,7 +10,6 @@ class MyCustomUserManager(BaseUserManager):
             raise ValueError('Поле email должно быть заполнено!')
         email = self.normalize_email(email)
         user = self.model(email=email, **kwargs)
-        user.create_activation_code()
         user.password = make_password(password)
         user.save(using=self._db)
         return user
