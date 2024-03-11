@@ -172,9 +172,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
-    ),
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 SIMPLE_JWT = {
@@ -293,7 +291,10 @@ JAZZMIN_SETTINGS = {
         # Ссылки, отображаемые в верхнем меню
         {"name": "Домой", "url": "admin:index",
          "permissions": ["auth.view_user"]},
+        {"name": "Скачать Email", "url": "/admin/download_emails/",
+         "icon": "fas fa-download", "permissions": ["auth.view_user"]},
     ],
+
     "show_ui_builder": True,
     "changeform_format": "horizontal_tabs",
     # Используйте горизонтальные вкладки на страницах редактирования
