@@ -15,13 +15,18 @@ class Product(models.Model):
         RegexValidator(r'^[0-9!@#$%^&*()-_+=?]+$'),
     ],
                                verbose_name='Артикул')
+    optional_size = models.CharField(max_length=20, blank=True, null=True, verbose_name='Размер товара (опционально)')
     price = models.PositiveIntegerField(verbose_name='Цена')
     quantity = models.IntegerField(default=0, verbose_name='Количество товара')
-    description = models.TextField()
-    tech_characteristics = models.TextField(blank=True, null=True)
+    description = models.TextField(verbose_name='Описание товара')
+    tech_characteristics = models.TextField(blank=True, null=True, verbose_name='Тех. характеристики (опционально)')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', verbose_name='Категория')
-    dop_info = models.TextField(blank=True, null=True)
+    dop_info = models.TextField(blank=True, null=True, verbose_name='Доп. информация (опционально)')
     stock = models.CharField(choices=STATUS_CHOICES, max_length=20, blank=True, null=True, verbose_name='Наличие')
+    discount = models.IntegerField(verbose_name='Скидка', blank=True, null=True)
+
+    product = models.ForeignKey('self', on_delete=models.SET_NULL,
+                                blank=True, null=True, related_name='various_products')
 
     def __str__(self):
         return f'{self.title} -> {self.quantity}'
@@ -50,29 +55,17 @@ class ProductImage(models.Model):
         verbose_name_plural = 'Фотографии товаров'
 
 
-class ProductSize(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_sizes')
-    size = models.CharField(max_length=20, blank=True, null=True)
-
-    def __str__(self):
-        return f'Размер товара'
-
-    class Meta:
-        verbose_name = 'Размер товара'
-        verbose_name_plural = 'Размеры товара'
-
-
-class ProductDiscount(models.Model):
-    product = models.ManyToManyField(Product, related_name='product_discounts')
-    discount = models.PositiveSmallIntegerField(verbose_name='Процент скидки',
-                                                validators=[MinValueValidator(limit_value=0),
-                                                            MaxValueValidator(limit_value=99)])
-
-    def __str__(self):
-        return f'Скидка в {self.discount}%'
-
-    class Meta:
-        verbose_name = 'Скидка'
-        verbose_name_plural = 'Скидки'
-
+# class ProductDiscount(models.Model):
+#     product = models.ManyToManyField(Product, related_name='product_discounts')
+#     discount = models.PositiveSmallIntegerField(verbose_name='Процент скидки',
+#                                                 validators=[MinValueValidator(limit_value=0),
+#                                                             MaxValueValidator(limit_value=99)])
+#
+#     def __str__(self):
+#         return f'Скидка в {self.discount}%'
+#
+#     class Meta:
+#         verbose_name = 'Скидка'
+#         verbose_name_plural = 'Скидки'
+#
 

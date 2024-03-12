@@ -1,10 +1,7 @@
-from django.urls import path, include
-from rest_framework import routers
-from . import views
-
-router = routers.DefaultRouter()
-router.register(r'', views.ProductListViewSet, basename='products')
+from django.urls import path
+from .views import ProductList, ProductDetail
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('list/', ProductList.as_view()),
+    path('detail/<int:pk>/', ProductDetail.as_view()),
 ]

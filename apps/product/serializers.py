@@ -1,17 +1,15 @@
 from rest_framework import serializers
-from .models import Product, ProductImage, ProductSize, ProductDiscount
+from .models import Product, ProductImage
 
 
 class BaseProductSerializer(serializers.ModelSerializer):
     discounted_price = serializers.SerializerMethodField()
 
     def get_discounted_price(self, obj):
-        try:
-            product_discount = ProductDiscount.objects.get(product=obj.id)
-            discounted_price = obj.price - (obj.price * product_discount.discount / 100)
+        if obj.discount is not None:
+            discounted_price  = obj.price - (obj.price * obj.discount / 100)
             return discounted_price
-        except ProductDiscount.DoesNotExist:
-            return None
+        return None
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -20,27 +18,41 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProductSizeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductSize
-        fields = ('size', )
-
-
-class ProductDetailSerializer(BaseProductSerializer):
-    images = ProductImageSerializer(many=True, read_only=True)
-    product_sizes = ProductSizeSerializer(many=True, read_only=True)
+class ChildProductSerializer(BaseProductSerializer):
     discounted_price = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
+        fields = ('price', 'article', 'optional_size', 'price', 'discounted_price', 'stock')
+
+
+class ProductVariantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+class ProductDetailSerializer(BaseProductSerializer):
+    images = ProductImageSerializer(many=True, read_only=True)
+    discounted_price = serializers.SerializerMethodField()
+    various_products = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
         fields = ['id', 'title', 'article', 'price', 'quantity', 'description',
-                  'tech_characteristics', 'category', 'dop_info', 'images', 'product_sizes', 'stock',
-                  'discounted_price']
+                  'tech_characteristics', 'category', 'dop_info', 'images', 'stock',
+                  'various_products', 'discounted_price']
+
+    def get_various_products(self, obj):
+        children = obj.various_products.all()
+        serializer = ChildProductSerializer(children, many=True)
+        return serializer.data
 
 
 class ProductListSerializer(BaseProductSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     discounted_price = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Product

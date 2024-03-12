@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from .models import Order, OrderItem
-from ..product.models import Product, ProductDiscount
+from ..product.models import Product
 
 
 class OrderItemSerializer(serializers.ModelSerializer):

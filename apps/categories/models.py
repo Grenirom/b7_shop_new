@@ -1,6 +1,4 @@
 from django.db import models
-from django.utils.text import slugify
-from multiupload.fields import MultiFileField
 
 
 class Category(models.Model):
