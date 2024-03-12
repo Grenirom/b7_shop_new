@@ -23,7 +23,7 @@ class ChildProductSerializer(BaseProductSerializer):
 
     class Meta:
         model = Product
-        fields = ('price', 'article', 'optional_size', 'price', 'discounted_price', 'stock')
+        fields = ('price', 'article', 'optional_size', 'price', 'discounted_price', 'stock', 'product')
 
 
 class ProductVariantSerializer(serializers.ModelSerializer):
@@ -41,7 +41,7 @@ class ProductDetailSerializer(BaseProductSerializer):
         model = Product
         fields = ['id', 'title', 'article', 'price', 'quantity', 'description',
                   'tech_characteristics', 'category', 'dop_info', 'images', 'stock',
-                  'various_products', 'discounted_price']
+                  'various_products', 'discounted_price', 'product']
 
     def get_various_products(self, obj):
         children = obj.various_products.all()

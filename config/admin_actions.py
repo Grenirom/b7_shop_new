@@ -15,7 +15,7 @@ def download_emails(request):
     for user in users:
         ws.append([user.email])
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=emails.xlsx'
+    response['Content-Disposition'] = 'attachment; filename=b7.kg-emails.xlsx'
 
     wb.save(response)
 
