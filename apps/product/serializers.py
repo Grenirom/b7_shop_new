@@ -41,7 +41,7 @@ class ProductDetailSerializer(BaseProductSerializer):
         model = Product
         fields = ['id', 'title', 'article', 'price', 'quantity', 'description',
                   'tech_characteristics', 'category', 'dop_info', 'images', 'stock',
-                  'various_products', 'discounted_price', 'product']
+                  'optional_size', 'various_products', 'discounted_price', 'product']
 
     def get_various_products(self, obj):
         children = obj.various_products.all()
@@ -53,9 +53,8 @@ class ProductListSerializer(BaseProductSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     discounted_price = serializers.SerializerMethodField()
 
-
     class Meta:
         model = Product
         fields = ('id', 'images', 'article', 'title', 'price', 'stock',
-                  'category','description', 'tech_characteristics', 'discounted_price', 'product')
+                  'category', 'description', 'tech_characteristics', 'discounted_price', 'product')
 
