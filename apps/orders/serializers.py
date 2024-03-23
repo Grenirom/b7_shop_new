@@ -61,12 +61,10 @@ class OrderSerializer(serializers.ModelSerializer):
             if product_data.quantity < quantity:
                 raise ValidationError(f'Not enough quantity for {product_data.title}')
 
-            # Применяем скидку, если она есть для данного товара
             discounted_price = product_data.price
-            product_discount = ProductDiscount.objects.filter(product=product_data).first()
-            if product_discount:
-                discounted_price = product_data.price - (product_data.price * product_discount.discount / 100)
 
+            if product_data.discount:
+                discounted_price = product_data.price - (product_data.price * product_data.discount / 100)
             total_sum += quantity * discounted_price
             product_data.quantity -= quantity
             product_data_list.append(product_data)
