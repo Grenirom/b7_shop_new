@@ -55,17 +55,15 @@ class ProductImage(models.Model):
         verbose_name_plural = 'Фотографии товаров'
 
 
-# class ProductDiscount(models.Model):
-#     product = models.ManyToManyField(Product, related_name='product_discounts')
-#     discount = models.PositiveSmallIntegerField(verbose_name='Процент скидки',
-#                                                 validators=[MinValueValidator(limit_value=0),
-#                                                             MaxValueValidator(limit_value=99)])
-#
-#     def __str__(self):
-#         return f'Скидка в {self.discount}%'
-#
-#     class Meta:
-#         verbose_name = 'Скидка'
-#         verbose_name_plural = 'Скидки'
-#
+class ProductHome(models.Model):
+    title = models.CharField(max_length=150)
+    description = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='home-images/')
+    url = models.URLField()
 
+    def __str__(self):
+        return f'Объявление'
+
+    class Meta:
+        verbose_name = 'Объявление на главной странице'
+        verbose_name_plural = 'Объявления на главной странице'

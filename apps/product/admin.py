@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db import models
 from django.forms import Textarea
 
-from .models import Product, ProductImage
+from .models import Product, ProductImage, ProductHome
 
 
 class ProductImageInline(admin.TabularInline):
@@ -25,3 +25,4 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductImage)
+admin.site.register(ProductHome)
