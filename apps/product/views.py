@@ -40,11 +40,12 @@ class ProductDetail(generics.RetrieveAPIView):
 
 
 class ProductListWithNoChild(generics.ListAPIView):
+    queryset = Product.objects.filter(product__isnull=True).prefetch_related('images')
     serializer_class = ProductListSerializer
     pagination_class = StandartResultPagination
 
     def get_queryset(self):
-        queryset = Product.objects.filter(product__isnull=True).prefetch_related('images')
+        queryset = super().get_queryset()
         category_id = self.request.query_params.get('category')
         if category_id:
             queryset = queryset.filter(category=category_id)
