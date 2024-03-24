@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, ProductImage
+from .models import Product, ProductImage, ProductHome
 
 
 class BaseProductSerializer(serializers.ModelSerializer):
@@ -58,3 +58,9 @@ class ProductListSerializer(BaseProductSerializer):
         fields = ('id', 'images', 'article', 'title', 'price', 'stock',
                   'category', 'description', 'tech_characteristics', 'discounted_price', 'product', 'discount')
 
+
+class ProductHomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductHome
+        fields = '__all__'
+        

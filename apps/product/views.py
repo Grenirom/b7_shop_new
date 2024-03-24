@@ -3,8 +3,8 @@ from rest_framework import generics
 
 from rest_framework.pagination import PageNumberPagination
 
-from .models import Product
-from .serializers import ProductDetailSerializer, ProductListSerializer
+from .models import Product, ProductHome
+from .serializers import ProductDetailSerializer, ProductListSerializer, ProductHomeSerializer
 
 
 class StandartResultPagination(PageNumberPagination):
@@ -60,3 +60,8 @@ class ProductListWithNoChild(generics.ListAPIView):
             )
 
         return queryset
+
+
+class ProductHomeView(generics.ListAPIView):
+    queryset = ProductHome.objects.all()
+    serializer_class = ProductHomeSerializer
