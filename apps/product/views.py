@@ -8,7 +8,7 @@ from .serializers import ProductDetailSerializer, ProductListSerializer, Product
 
 
 class StandartResultPagination(PageNumberPagination):
-    page_size = 8
+    page_size = 4
     page_query_param = 'page'
 
 

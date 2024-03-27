@@ -42,7 +42,10 @@ class OrderSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(f'Product with id {product_id} not found')
 
             if product_data.quantity < product['quantity']:
-                raise serializers.ValidationError(f'Not enough quantity for {product_data.title}')
+                raise serializers.ValidationError(f'Недостаточно количества товара: '
+                                                  f'{product_data.title} - {product_data.optional_size}, '
+                                                  f'в наличии осталось: '
+                                                  f'{product_data.quantity}')
 
         return products
 
