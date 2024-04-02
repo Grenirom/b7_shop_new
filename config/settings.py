@@ -36,7 +36,7 @@ INSTALLED_APPS = [
 ]
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['13.51.165.176', ]
 
 
 
