@@ -36,8 +36,7 @@ INSTALLED_APPS = [
 ]
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['13.51.165.176', ]
-
+ALLOWED_HOSTS = ['13.51.165.176', '127.0.0.1']
 
 
 MIDDLEWARE = [
