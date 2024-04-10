@@ -1,4 +1,6 @@
 from django.db.models import Q
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import generics
 
 from rest_framework.pagination import PageNumberPagination
@@ -33,10 +35,18 @@ class ProductList(generics.ListAPIView):
 
         return queryset
 
+    @method_decorator(cache_page(60 * 15))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class ProductDetail(generics.RetrieveAPIView):
     serializer_class = ProductDetailSerializer
     queryset = Product.objects.all().select_related('category').prefetch_related('images')
+
+    @method_decorator(cache_page(60 * 15))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ProductListWithNoChild(generics.ListAPIView):
@@ -61,7 +71,15 @@ class ProductListWithNoChild(generics.ListAPIView):
 
         return queryset
 
+    @method_decorator(cache_page(60 * 15))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class ProductHomeView(generics.ListAPIView):
     queryset = ProductHome.objects.all()
     serializer_class = ProductHomeSerializer
+
+    @method_decorator(cache_page(60 * 15))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
