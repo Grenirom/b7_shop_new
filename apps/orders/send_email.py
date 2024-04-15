@@ -30,7 +30,7 @@ def send_order_email_to_owner(order_id, total_sum, created_at, shipping_address)
             'order_id': order_id,
             'total_sum': total_sum,
             'shipping_address': shipping_address,
-            'admin_panel_link': 'https://backend.b7.kg',  # Замените на вашу ссылку
+            'admin_panel_link': 'https://backend.b7.kg/admin/orders/order/',  # Замените на вашу ссылку
         }
     )
 
