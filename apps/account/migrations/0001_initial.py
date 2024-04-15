@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
                 ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('email', models.EmailField(max_length=254, unique=True)),
+                ('emails', models.EmailField(max_length=254, unique=True)),
                 ('password', models.CharField(max_length=250, validators=[django.core.validators.MinValueValidator(limit_value=8), django.core.validators.MaxValueValidator(limit_value=20)])),
                 ('is_active', models.BooleanField(default=False)),
                 ('is_superuser', models.BooleanField(default=False)),

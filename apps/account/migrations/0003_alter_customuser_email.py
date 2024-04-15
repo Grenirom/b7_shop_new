@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='customuser',
-            name='email',
+            name='emails',
             field=models.EmailField(max_length=254, unique=True, verbose_name='Почта'),
         ),
     ]

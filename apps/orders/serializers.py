@@ -16,7 +16,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.email')
+    user = serializers.ReadOnlyField(source='user.emails')
     products = OrderItemSerializer(many=True, write_only=True)
 
     class Meta:

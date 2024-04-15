@@ -7,7 +7,7 @@ class MyCustomUserManager(BaseUserManager):
 
     def _create_user(self, email, password, **kwargs):
         if not email:
-            raise ValueError('Поле email должно быть заполнено!')
+            raise ValueError('Поле emails должно быть заполнено!')
         email = self.normalize_email(email)
         user = self.model(email=email, **kwargs)
         user.password = make_password(password)
