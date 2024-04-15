@@ -35,7 +35,7 @@ class ProductList(generics.ListAPIView):
 
         return queryset
 
-    @method_decorator(cache_page(60 * 15))
+    @method_decorator(cache_page(60 * 60))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -44,7 +44,7 @@ class ProductDetail(generics.RetrieveAPIView):
     serializer_class = ProductDetailSerializer
     queryset = Product.objects.all().select_related('category').prefetch_related('images')
 
-    @method_decorator(cache_page(60 * 15))
+    @method_decorator(cache_page(60 * 60))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -71,7 +71,7 @@ class ProductListWithNoChild(generics.ListAPIView):
 
         return queryset
 
-    @method_decorator(cache_page(60 * 15))
+    @method_decorator(cache_page(60 * 60))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
