@@ -12,10 +12,6 @@ class CustomUser(AbstractUser):
         unique=True,
         verbose_name='Почта'
     )
-    password = models.CharField(max_length=250, validators=[
-        MinValueValidator(limit_value=8),
-        MaxValueValidator(limit_value=20),
-    ])
     is_active = models.BooleanField(default=True, verbose_name='Активен')
     is_superuser = models.BooleanField(default=False)
     username = models.CharField(max_length=100, null=True, blank=True)
