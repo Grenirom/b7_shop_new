@@ -37,8 +37,7 @@ INSTALLED_APPS = [
 ]
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['13.51.165.176', '127.0.0.1']
-
+ALLOWED_HOSTS = ['backend.b7.kg', '127.0.0.1']
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -316,4 +315,6 @@ LANGUAGES = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
+    "https://b7.kg",
+    "https://www.b7.kg"
 ]
