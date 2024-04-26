@@ -26,10 +26,12 @@ class Product(models.Model):
     discount = models.IntegerField(verbose_name='Скидка', blank=True, null=True)
 
     product = models.ForeignKey('self', on_delete=models.SET_NULL,
-                                blank=True, null=True, related_name='various_products')
+                                blank=True, null=True, related_name='various_products',
+                                verbose_name='Родительский товар (для создания одного товара с разными '
+                                             'размерами/артикулами/скидками и тд.)')
 
     def __str__(self):
-        return f'{self.title} -> {self.quantity}'
+        return f'{self.title} -> {self.quantity} -> {self.optional_size}' if self.optional_size else f'{self.title} -> {self.quantity}'
 
     def save(self, *args, **kwargs):
         if self.quantity > 0:
@@ -56,9 +58,9 @@ class ProductImage(models.Model):
 
 
 class ProductHome(models.Model):
-    title = models.CharField(max_length=150)
-    description = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='home-images/')
+    title = models.CharField(max_length=150, verbose_name='Заголовок')
+    description = models.CharField(max_length=200, verbose_name='Описание')
+    image = models.ImageField(upload_to='home-images/', verbose_name='Картинка')
     url = models.URLField()
 
     def __str__(self):
