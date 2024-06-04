@@ -24,6 +24,16 @@ class Product(models.Model):
     dop_info = models.TextField(blank=True, null=True, verbose_name='Доп. информация (опционально)')
     stock = models.CharField(choices=STATUS_CHOICES, max_length=20, blank=True, null=True, verbose_name='Наличие')
     discount = models.IntegerField(verbose_name='Скидка', blank=True, null=True)
+    # desc_image1 = models.ImageField(verbose_name='Доп. фото для описания', upload_to='product-images/')
+    # desc_image1 = models.ImageField(verbose_name='Доп. фото для описания', upload_to='product-images/')
+    # desc_image1 = models.ImageField(verbose_name='Доп. фото для описания', upload_to='product-images/')
+    # desc_image1 = models.ImageField(verbose_name='Доп. фото для описания', upload_to='product-images/')
+    # desc_image1 = models.ImageField(verbose_name='Доп. фото для описания', upload_to='product-images/')
+    # desc_image1 = models.ImageField(verbose_name='Доп. фото для описания', upload_to='product-images/')
+    # desc_image1 = models.ImageField(verbose_name='Доп. фото для описания', upload_to='product-images/')
+    # desc_image1 = models.ImageField(verbose_name='Доп. фото для описания', upload_to='product-images/')
+    # desc_image1 = models.ImageField(verbose_name='Доп. фото для описания', upload_to='product-images/')
+    #
 
     product = models.ForeignKey('self', on_delete=models.SET_NULL,
                                 blank=True, null=True, related_name='various_products',
@@ -55,6 +65,30 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = 'Фотография товара'
         verbose_name_plural = 'Фотографии товаров'
+
+
+class ProductTechImages(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='tech_images')
+    image = models.FileField(upload_to='product-images/')
+
+    def __str__(self):
+        return f'Доп. фото товара для характеристик'
+
+    class Meta:
+        verbose_name = 'Фотография для характеристики товара'
+        verbose_name_plural = 'Фотографии для характеристик товаров'
+
+
+class ProductTechCharacteristics(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='tech_char')
+    tech_char = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'Доп. характеристики для товара'
+
+    class Meta:
+        verbose_name = 'Доп. характеристики для товара'
+        verbose_name_plural = 'Доп. характеристики для товаров'
 
 
 class ProductHome(models.Model):
