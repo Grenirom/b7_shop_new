@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, ProductImage, ProductHome
+from .models import Product, ProductImage, ProductHome, ProductTechImages, ProductTechCharacteristics
 
 
 class BaseProductSerializer(serializers.ModelSerializer):
@@ -7,7 +7,7 @@ class BaseProductSerializer(serializers.ModelSerializer):
 
     def get_discounted_price(self, obj):
         if obj.discount is not None:
-            discounted_price  = obj.price - (obj.price * obj.discount / 100)
+            discounted_price = obj.price - (obj.price * obj.discount / 100)
             return discounted_price
         return None
 
@@ -15,6 +15,18 @@ class BaseProductSerializer(serializers.ModelSerializer):
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
+        fields = '__all__'
+
+
+class ProductTechImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductTechImages
+        fields = '__all__'
+
+
+class ProductTechCharSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductTechCharacteristics
         fields = '__all__'
 
 
@@ -34,6 +46,8 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 
 class ProductDetailSerializer(BaseProductSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
+    tech_images = ProductTechImageSerializer(many=True, read_only=True)
+    tech_chars = ProductTechCharSerializer(many=True, read_only=True)
     discounted_price = serializers.SerializerMethodField()
     various_products = serializers.SerializerMethodField()
 
@@ -41,7 +55,8 @@ class ProductDetailSerializer(BaseProductSerializer):
         model = Product
         fields = ['id', 'title', 'article', 'price', 'quantity', 'description',
                   'tech_characteristics', 'category', 'dop_info', 'images', 'stock',
-                  'optional_size', 'various_products', 'discounted_price', 'product']
+                  'optional_size', 'various_products', 'discounted_price', 'product',
+                  'tech_images', 'tech_chars']
 
     def get_various_products(self, obj):
         children = obj.various_products.all()

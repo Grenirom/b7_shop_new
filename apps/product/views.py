@@ -42,7 +42,8 @@ class ProductList(generics.ListAPIView):
 
 class ProductDetail(generics.RetrieveAPIView):
     serializer_class = ProductDetailSerializer
-    queryset = Product.objects.all().select_related('category').prefetch_related('images')
+    queryset = Product.objects.all().select_related('category').prefetch_related('images',
+                                                                                 'tech_images')
 
     @method_decorator(cache_page(60 * 60))
     def dispatch(self, request, *args, **kwargs):
