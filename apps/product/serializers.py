@@ -47,7 +47,7 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 class ProductDetailSerializer(BaseProductSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     tech_images = ProductTechImageSerializer(many=True, read_only=True)
-    tech_chars = ProductTechCharSerializer(many=True, read_only=True)
+    tech_chars = serializers.SerializerMethodField()
     discounted_price = serializers.SerializerMethodField()
     various_products = serializers.SerializerMethodField()
 
@@ -56,11 +56,16 @@ class ProductDetailSerializer(BaseProductSerializer):
         fields = ['id', 'title', 'article', 'price', 'quantity', 'description',
                   'tech_characteristics', 'category', 'dop_info', 'images', 'stock',
                   'optional_size', 'various_products', 'discounted_price', 'product',
-                  'tech_images', 'tech_chars']
+                  'tech_chars', 'tech_images']
 
     def get_various_products(self, obj):
         children = obj.various_products.all()
         serializer = ChildProductSerializer(children, many=True)
+        return serializer.data
+
+    def get_tech_chars(self, obj):
+        tech_chars = ProductTechCharacteristics.objects.all()
+        serializer = ProductTechCharSerializer(tech_chars, many=True)
         return serializer.data
 
 
