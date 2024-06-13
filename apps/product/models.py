@@ -4,6 +4,17 @@ from django.db import models
 from apps.categories.models import Category
 
 
+class MainPage(models.Model):
+    title = models.CharField(max_length=50, verbose_name='Название категории для главной страницы')
+
+    class Meta:
+        verbose_name = 'Категория для главной страницы'
+        verbose_name_plural = 'Категории для главной страницы'
+
+    def __str__(self):
+        return f'{self.title}'
+
+
 class Product(models.Model):
     STATUS_CHOICES = (
         ('in_stock', 'В наличии!'),
@@ -29,6 +40,8 @@ class Product(models.Model):
                                 blank=True, null=True, related_name='various_products',
                                 verbose_name='Родительский товар (для создания одного товара с разными '
                                              'размерами/артикулами/скидками и тд.)')
+    main_page_category = models.ForeignKey(MainPage, on_delete=models.SET_NULL,
+                                           null=True, verbose_name='Категория для товара на главной старнице')
 
     def __str__(self):
         return f'{self.title} -> {self.quantity} -> {self.optional_size}' if self.optional_size else f'{self.title} -> {self.quantity}'
