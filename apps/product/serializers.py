@@ -77,7 +77,7 @@ class ProductListSerializer(BaseProductSerializer):
         model = Product
         fields = ('id', 'images', 'article', 'title', 'price', 'stock',
                   'category', 'description', 'tech_characteristics', 'discounted_price', 'product', 'discount',
-                  'optional_size')
+                  'optional_size', 'main_page_category')
 
 
 class ProductHomeSerializer(serializers.ModelSerializer):
