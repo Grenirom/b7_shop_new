@@ -41,7 +41,7 @@ class Product(models.Model):
                                 verbose_name='Родительский товар (для создания одного товара с разными '
                                              'размерами/артикулами/скидками и тд.)')
     main_page_category = models.ForeignKey(MainPage, on_delete=models.SET_NULL,
-                                           null=True, verbose_name='Категория для товара на главной старнице')
+                                           null=True, blank=True,verbose_name='Категория для товара на главной старнице')
 
     def __str__(self):
         return f'{self.title} -> {self.quantity} -> {self.optional_size}' if self.optional_size else f'{self.title} -> {self.quantity}'
