@@ -29,7 +29,7 @@ class Product(models.Model):
     optional_size = models.CharField(max_length=20, blank=True, null=True, verbose_name='Размер товара (опционально)')
     price = models.PositiveIntegerField(verbose_name='Цена')
     quantity = models.IntegerField(default=0, verbose_name='Количество товара')
-    description = models.TextField(verbose_name='Описание товара')
+    description = models.TextField(blank=True, null=True, verbose_name='Описание товара')
     tech_characteristics = models.TextField(blank=True, null=True, verbose_name='Тех. характеристики (опционально)')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', verbose_name='Категория')
     dop_info = models.TextField(blank=True, null=True, verbose_name='Доп. информация (опционально)')

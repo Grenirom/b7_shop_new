@@ -8,11 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 from .models import Product, ProductHome
 from .serializers import ProductDetailSerializer, ProductListSerializer, ProductHomeSerializer
 
-
-class ProductList(generics.ListAPIView):
-    queryset = Product.objects.all().prefetch_related('images')
-    serializer_class = ProductListSerializer
-
+class ProductAbstract(generics.ListAPIView):
     def get_queryset(self):
         queryset = super().get_queryset()
         category_id = self.request.query_params.get('category')
@@ -33,6 +29,10 @@ class ProductList(generics.ListAPIView):
     @method_decorator(cache_page(60 * 60))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+class ProductList(ProductAbstract):
+    queryset = Product.objects.all().prefetch_related('images')
+    serializer_class = ProductListSerializer
 
 
 class ProductDetail(generics.RetrieveAPIView):
@@ -45,29 +45,9 @@ class ProductDetail(generics.RetrieveAPIView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class ProductListWithNoChild(generics.ListAPIView):
+class ProductListWithNoChild(ProductAbstract):
     queryset = Product.objects.filter(product__isnull=True).prefetch_related('images')
     serializer_class = ProductListSerializer
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        category_id = self.request.query_params.get('category')
-        if category_id:
-            queryset = queryset.filter(category=category_id)
-
-        search_query = self.request.query_params.get('search', None)
-        if search_query:
-            queryset = queryset.filter(
-                Q(title__icontains=search_query) |
-                Q(article__icontains=search_query) |
-                Q(description__icontains=search_query) |
-                Q(tech_characteristics__icontains=search_query)
-            )
-
-        return queryset
-
-    @method_decorator(cache_page(60 * 60))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
 
 class ProductHomeView(generics.ListAPIView):

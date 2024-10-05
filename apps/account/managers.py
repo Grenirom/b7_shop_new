@@ -13,6 +13,7 @@ class MyCustomUserManager(BaseUserManager):
         user.password = make_password(password)
         user.save(using=self._db)
         return user
+    
 
     def create_user(self, email, password, **kwargs):
         kwargs.setdefault('is_active', False)

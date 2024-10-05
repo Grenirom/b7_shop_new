@@ -7,7 +7,7 @@ User = get_user_model()
 
 def download_emails(request):
     wb = openpyxl.Workbook()
-    ws = wb.active
+    ws = wb.active 
 
     users = User.objects.all()
     ws.append(['Email'])
